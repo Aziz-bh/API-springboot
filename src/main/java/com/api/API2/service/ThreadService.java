@@ -26,5 +26,8 @@ public class ThreadService {
     public Optional<Thread> getThreadById(String id){
         return threadRepository.findById(id);
     }
+    public void deleteThread(String id){
+        threadRepository.deleteById(id);
+    }
 
 }

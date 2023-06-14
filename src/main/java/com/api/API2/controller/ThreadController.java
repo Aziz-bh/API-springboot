@@ -22,8 +22,7 @@ public class ThreadController {
     }
     @GetMapping("/threads")
     public List<Thread> getAllThreads(){
-        List<Thread> threads = new ArrayList<>();
-        threads.add(new Thread("ttitle"));
+        List<Thread> threads = threadService.getAllThreads();
         return threads;
     }
 
