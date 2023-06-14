@@ -57,4 +57,28 @@ public class Reply {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public Thread getThread() {
+        return thread;
+    }
+
+    public void setThread(Thread thread) {
+        this.thread = thread;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 }

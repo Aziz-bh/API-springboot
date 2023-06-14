@@ -1,16 +1,14 @@
 package com.api.API2.controller;
 
 
+import com.api.API2.entity.Reply;
 import com.api.API2.entity.Thread;
-import com.api.API2.entity.User;
 import com.api.API2.service.ThreadService;
-import com.api.API2.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class ThreadController {
@@ -26,9 +24,27 @@ public class ThreadController {
         return threads;
     }
 
-    @GetMapping("/threadsp")
-    public Thread getAllThreadsp(){
-        return threadService.saveThread(new Thread("ttitle"));
+    @GetMapping("/thread/{id}")
+    public Optional<Thread> getAllThreadsp(@PathVariable String id){
+        return threadService.getThreadById(id);
+    }
+
+    @PostMapping("/thread")
+    public Thread saveThread(@RequestBody Thread t){
+        return threadService.saveThread(t);
+    }
+    @PutMapping("/thread/{id}")
+    public void updateThread(@PathVariable String id,@RequestBody Thread t){
+        Optional<Thread> thread = threadService.getThreadById(id);
+        Thread existingThread = thread.get();
+        existingThread.setIssue(t.getIssue());
+        existingThread.setTitle(t.getTitle());
+        threadService.saveThread(existingThread);
+    }
+
+    @DeleteMapping("/thread/{id}")
+    public void deleteThread(@PathVariable String id){
+        threadService.deleteThread(id);
     }
 
 }

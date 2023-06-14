@@ -37,5 +37,16 @@ public class ReplyController {
         replyService.deleteReply(id);
     }
 
+    @PutMapping("/reply/{id}")
+    public void updateReply(@PathVariable String id,@RequestBody Reply r){
+        Optional<Reply> replyOptional = replyService.getReplyById(id);
+        if (replyOptional.isPresent()) {
+            Reply existingReply = replyOptional.get();
+            existingReply.setId(id); // Update the properties as needed
+            existingReply.setAnswer(r.getAnswer());
+            replyService.saveReply(existingReply);
+        }
+    }
+
 
 }
