@@ -1,5 +1,7 @@
 package com.api.API2.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -9,6 +11,7 @@ import java.util.List;
 @Document(collection = "users")
 public class User {
     @Id
+    @JsonProperty("_id")
     private String id;
 
     private String name;
@@ -17,6 +20,7 @@ public class User {
 
     private String email;
 
+    @JsonIgnore
     private String password;
 
     @DBRef
@@ -25,8 +29,10 @@ public class User {
     @DBRef
     private List<User> following;
 
+    @JsonIgnore
     private List<Token> tokens;
 
+    @JsonIgnore
     private byte[] avatar;
 
     // Constructors, getters, and setters

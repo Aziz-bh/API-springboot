@@ -2,13 +2,10 @@ package com.api.API2.controller;
 
 import com.api.API2.entity.User;
 import com.api.API2.service.UserService;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 public class UserController {
@@ -26,8 +23,18 @@ public class UserController {
     }
 
     @PostMapping("/user")
-    public User reciving(@RequestBody String id){
-        System.out.println(id);
-       return userService.getUserById(id);
+    public User receiving(HttpServletRequest request) {
+
+        String authorizationHeader = request.getHeader("Authorization");
+
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            String jwt = authorizationHeader.substring(7); // Remove "Bearer " prefix
+
+            User u=userService.getUserById(jwt);
+
+            return userService.getUserById(jwt);
+        }
+return null;
+
     }
 }

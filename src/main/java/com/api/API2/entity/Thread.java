@@ -1,5 +1,6 @@
 package com.api.API2.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -21,6 +22,7 @@ public class Thread {
     String title;
     String issue;
     int likes;
+
 
     @DBRef
     User user;
