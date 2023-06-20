@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -35,7 +36,7 @@ public class ReplyController {
         return ResponseEntity.notFound().build();
     }
     @PostMapping("/reply/{th}")
-    public  ResponseEntity<Reply> postReply(@RequestBody Reply r,HttpServletRequest request,@PathVariable String th){
+    public  ResponseEntity<Reply> postReply(@Valid @RequestBody Reply r, HttpServletRequest request, @PathVariable String th){
         User u=userService.getUserById(request.getHeader("Authorization").substring(7));
         if(u!=null) {
             r.setUser(u);

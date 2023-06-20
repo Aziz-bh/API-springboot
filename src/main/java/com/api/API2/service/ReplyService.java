@@ -2,6 +2,7 @@ package com.api.API2.service;
 
 import com.api.API2.entity.Reply;
 import com.api.API2.entity.Thread;
+import com.api.API2.exceptions.ReplyException;
 import com.api.API2.repository.ReplyRepository;
 import com.api.API2.repository.ThreadRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,22 +32,29 @@ public class ReplyService {
             thread.addReply(t);
             threadService.saveThread(thread);
         return r;}
-        return null;
+        throw  new ReplyException("saving Error");
     }
     public List<Reply> getAllReplies(){
         return replyRepository.findAll();
     }
     public Optional<Reply> getReplyById(String id){
+        Optional<Reply> reply=replyRepository.findById(id);
+        if(!reply.isEmpty())
         return replyRepository.findById(id);
+        else throw  new ReplyException("not found");
     }
     public List<Reply> getRepliesByUser(String id){
-        return replyRepository.findRepliesByUserId(id);
+        List<Reply> replies=replyRepository.findRepliesByUserId(id);
+        if(replies!=null)
+        return replies;
+        else throw  new ReplyException("not found");
     }
     public void deleteReply(String id, String idUser) {
         Optional<Reply> reply = getReplyById(id);
         if (reply != null && reply.get().getUser().getId().equals(idUser)) {
             replyRepository.deleteById(id);
         }
+        else throw  new ReplyException("not found");
     }
 
     public List<Reply> getRepliesByThread(String thread){

@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Document
@@ -16,6 +17,7 @@ public class Reply {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     String id;
+    @Size(min=2)
     String answer;
     @DBRef
     User user;
