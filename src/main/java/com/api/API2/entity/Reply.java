@@ -1,5 +1,6 @@
 package com.api.API2.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -18,6 +19,7 @@ public class Reply {
     String answer;
     @DBRef
     User user;
+    @JsonIgnore
     @DBRef
     private Thread thread;
     @CreatedDate

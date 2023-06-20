@@ -12,6 +12,7 @@ import java.util.Optional;
 public class ThreadService {
     private ThreadRepository threadRepository;
 
+
     @Autowired
     public ThreadService(ThreadRepository threadRepository){
         this.threadRepository=threadRepository;

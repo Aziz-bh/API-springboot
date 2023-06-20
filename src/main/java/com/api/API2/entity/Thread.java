@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -35,6 +36,20 @@ public class Thread {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
+    public List<Reply> getReplies() {
+        return replies;
+    }
+
+    public void addReply(Reply reply) {
+        if (replies == null) {
+            replies = new ArrayList<>();
+        }
+        replies.add(reply);
+    }
+
+    public void setReplies(List<Reply> replies) {
+        this.replies = replies;
+    }
 
     public Thread(String title, String issue, int likes, User user) {
         this.title = title;
@@ -109,5 +124,19 @@ public class Thread {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    @Override
+    public String toString() {
+        return "Thread{" +
+                "id='" + id + '\'' +
+                ", title='" + title + '\'' +
+                ", issue='" + issue + '\'' +
+                ", likes=" + likes +
+                ", user=" + user +
+                ", replies=" + replies +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
     }
 }
