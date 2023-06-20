@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,11 +21,15 @@ public class Thread {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
-    @Size(min=2)
+    @NotNull
+    @NotBlank
     String title;
-    @Size(min=2)
+    @NotNull
+    @NotBlank
     String issue;
+    @Positive
     int likes;
+
 
 
     @DBRef
