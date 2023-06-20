@@ -6,6 +6,7 @@ import com.api.API2.entity.User;
 import com.api.API2.service.ThreadService;
 import com.api.API2.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,62 +24,68 @@ public class ThreadController {
         this.threadService=threadService;
     }
     @GetMapping("/threads")
-    public List<Thread> getAllThreads(HttpServletRequest request){
+    public ResponseEntity<Object> getAllThreads(HttpServletRequest request){
 
         User u=userService.getUserById(request.getHeader("Authorization").substring(7));
         if(u!=null){
             List<Thread> threads = threadService.getAllThreads();
-            return threads;
+            return ResponseEntity.ok(threads);
         }
-   else return null;
+    return ResponseEntity.notFound().build();
 
     }
 
     @GetMapping("/thread/{id}")
-    public Optional<Thread> getAllThreadsp(@PathVariable String id,HttpServletRequest request){
+    public ResponseEntity<Object> getAllThreadsp(@PathVariable String id,HttpServletRequest request){
 
 
 
         User u=userService.getUserById(request.getHeader("Authorization").substring(7));
         if(u!=null){
 
-            return threadService.getThreadById(id);
+            return ResponseEntity.ok(threadService.getThreadById(id));
         }
-        else return null;
+         return ResponseEntity.notFound().build();
     }
 
     @PostMapping("/thread")
-    public Thread saveThread(@RequestBody Thread t,HttpServletRequest request){
+    public ResponseEntity<Object> saveThread(@RequestBody Thread t,HttpServletRequest request){
         User u=userService.getUserById(request.getHeader("Authorization").substring(7));
         if(u!=null){
             t.setUser(u);
             System.out.println(t);
-        return threadService.saveThread(t);}
-        else  return null;
+            ResponseEntity.ok(threadService.saveThread(t));}
+         return ResponseEntity.notFound().build();
     }
     @PutMapping("/thread/{id}")
-    public void updateThread(@PathVariable String id,@RequestBody Thread t,HttpServletRequest request){
-        User u=userService.getUserById(request.getHeader("Authorization").substring(7));
+    public ResponseEntity<Object> updateThread(@PathVariable String id, @RequestBody Thread t, HttpServletRequest request) {
+        User user = userService.getUserById(request.getHeader("Authorization").substring(7));
 
-        if(u!=null){
+        if (user != null) {
             Optional<Thread> thread = threadService.getThreadById(id);
-            Thread existingThread = thread.get();
-            if(existingThread.getUser().getId().equals(u.getId())) {
-                existingThread.setIssue(t.getIssue());
-                existingThread.setTitle(t.getTitle());
-                threadService.saveThread(existingThread);
+            if (thread.isPresent()) {
+                Thread existingThread = thread.get();
+                if (existingThread.getUser().getId().equals(user.getId())) {
+                    existingThread.setIssue(t.getIssue());
+                    existingThread.setTitle(t.getTitle());
+                    threadService.saveThread(existingThread);
+                    return ResponseEntity.ok().build();
+                }
             }
         }
-
+        return ResponseEntity.notFound().build();
     }
 
+
     @DeleteMapping("/thread/{id}")
-    public void deleteThread(@PathVariable String id,HttpServletRequest request){
+    public ResponseEntity<Object> deleteThread(@PathVariable String id,HttpServletRequest request){
         User u=userService.getUserById(request.getHeader("Authorization").substring(7));
         if(u!=null) {
           if(  threadService.getThreadById(id).get().getUser().getId().equals(u.getId()))
             threadService.deleteThread(id);
+          return ResponseEntity.ok().build();
         }
+        return ResponseEntity.notFound().build();
     }
 
 }

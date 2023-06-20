@@ -42,10 +42,13 @@ public class ReplyService {
     public List<Reply> getRepliesByUser(String id){
         return replyRepository.findRepliesByUserId(id);
     }
-    public void deleteReply(String id,String idUser){
-        if(replyRepository.findRepliesByUserId(idUser).contains(getReplyById(id)))
-        replyRepository.deleteById(id);
+    public void deleteReply(String id, String idUser) {
+        Optional<Reply> reply = getReplyById(id);
+        if (reply != null && reply.get().getUser().getId().equals(idUser)) {
+            replyRepository.deleteById(id);
+        }
     }
+
     public List<Reply> getRepliesByThread(String thread){
         return replyRepository.findRepliesByThreadId(thread);
     }
