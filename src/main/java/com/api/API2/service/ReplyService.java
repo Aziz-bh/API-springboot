@@ -26,7 +26,6 @@ public class ReplyService {
     public Reply saveReply(Reply t,String th) {
         if(threadService.getThreadById(th).get()!=null){
             Thread thread=threadService.getThreadById(th).get();
-            System.out.println(thread);
         t.setThread(thread);
         Reply r=replyRepository.save(t);
             thread.addReply(t);

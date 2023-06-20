@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,16 +50,15 @@ public class ThreadController {
     }
 
     @PostMapping("/thread")
-    public ResponseEntity<Object> saveThread(@RequestBody Thread t,HttpServletRequest request){
+    public ResponseEntity<Object> saveThread(@Valid @RequestBody Thread t,HttpServletRequest request){
         User u=userService.getUserById(request.getHeader("Authorization").substring(7));
         if(u!=null){
             t.setUser(u);
-            System.out.println(t);
             ResponseEntity.ok(threadService.saveThread(t));}
          return ResponseEntity.notFound().build();
     }
     @PutMapping("/thread/{id}")
-    public ResponseEntity<Object> updateThread(@PathVariable String id, @RequestBody Thread t, HttpServletRequest request) {
+    public ResponseEntity<Object> updateThread(@PathVariable String id, @Valid @RequestBody Thread t, HttpServletRequest request) {
         User user = userService.getUserById(request.getHeader("Authorization").substring(7));
 
         if (user != null) {
