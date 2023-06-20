@@ -18,6 +18,7 @@ public class UserController {
 
     @GetMapping("/user")
     public User getAllUser(){
+
         //return userService.getAllUsers();
         return userService.getUserById("1999");
     }

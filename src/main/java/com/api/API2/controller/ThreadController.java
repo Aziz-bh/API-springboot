@@ -40,12 +40,27 @@ public class ThreadController {
     public ResponseEntity<Object> getAllThreadsp(@PathVariable String id,HttpServletRequest request){
 
 
+        // Here is where I extract the sent ID. If the ID contains a JWT token, we will use the following code to separate the JWT from the thread ID.
+        String authorizationHeader = request.getHeader("Authorization");
+        if (authorizationHeader == null || authorizationHeader.isBlank()) {
+            if(id.toLowerCase().contains(":")){
+                String[] parts = id.split(":");
+                String jwt = parts[0].trim();
+                id = parts[1].trim();
+                User user=userService.getUserById(jwt);
+                if(user!=null){
 
-        User u=userService.getUserById(request.getHeader("Authorization").substring(7));
-        if(u!=null){
+                    return ResponseEntity.ok(threadService.getThreadById(id));
+                }
+            }
+        }else {
+            User u = userService.getUserById(request.getHeader("Authorization").substring(7));
+            if (u != null) {
 
-            return ResponseEntity.ok(threadService.getThreadById(id));
+                return ResponseEntity.ok(threadService.getThreadById(id));
+            }
         }
+
          return ResponseEntity.notFound().build();
     }
 

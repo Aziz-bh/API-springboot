@@ -61,6 +61,18 @@ public class Reply {
         return user;
     }
 
+    @Override
+    public String toString() {
+        return "Reply{" +
+                "id='" + id + '\'' +
+                ", answer='" + answer + '\'' +
+                ", user=" + user +
+                ", thread=" + thread +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
+    }
+
     public void setUser(User user) {
         this.user = user;
     }

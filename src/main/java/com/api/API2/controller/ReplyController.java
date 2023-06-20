@@ -1,10 +1,13 @@
 package com.api.API2.controller;
-
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 import com.api.API2.entity.Reply;
 import com.api.API2.entity.User;
 import com.api.API2.service.ReplyService;
 import com.api.API2.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -47,8 +50,15 @@ public class ReplyController {
     }
 
     @GetMapping("/reply/{id}")
-    public ResponseEntity<Optional<Reply>> getReplyById(@PathVariable String id,HttpServletRequest request){
-        return ResponseEntity.ok(replyService.getReplyById(id));
+    public ResponseEntity<EntityModel<Optional<Reply>>> getReplyById(@PathVariable String id, HttpServletRequest request) {
+        Optional<Reply> r = replyService.getReplyById(id);
+        String jwt = request.getHeader("Authorization").substring(7);
+        EntityModel<Optional<Reply>> resource = EntityModel.of(r);
+        String concatThJwt=jwt+":"+r.get().getThread().getId();
+        WebMvcLinkBuilder linkBuilder = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ThreadController.class).getAllThreadsp(concatThJwt, request));
+        resource.add(linkBuilder.withRel("thread"));
+
+        return ResponseEntity.ok(resource);
     }
 
 
