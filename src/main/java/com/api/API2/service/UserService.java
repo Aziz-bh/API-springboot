@@ -41,8 +41,6 @@ public class UserService {
 
             // Send request
             ResponseEntity<User> responseEntity = restTemplate.exchange(requestEntity, User.class);
-            System.out.println(responseEntity);
-            //System.out.println(responseEntity);
 
             if (responseEntity.getStatusCode().is2xxSuccessful()) {
                 return responseEntity.getBody();
