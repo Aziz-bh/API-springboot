@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.websocket.server.PathParam;
 import java.util.List;
 import java.util.Optional;
 
@@ -119,6 +120,25 @@ public class ThreadController {
           return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/thread/like/{id}")
+    public ResponseEntity<Object>  likeThread (@PathVariable String id,HttpServletRequest request){
+        String authorizationHeader = request.getHeader("Authorization");
+        if (authorizationHeader == null || authorizationHeader.isBlank()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        return ResponseEntity.ok(threadService.likeThread(id));
+    }
+
+
+    @GetMapping("/thread/dislike/{id}")
+    public ResponseEntity<Object>  dislikeThread (@PathVariable String id,HttpServletRequest request){
+        String authorizationHeader = request.getHeader("Authorization");
+        if (authorizationHeader == null || authorizationHeader.isBlank()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        return ResponseEntity.ok(threadService.dislikeThread(id));
     }
 
 }

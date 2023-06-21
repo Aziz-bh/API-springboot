@@ -43,4 +43,18 @@ public class ThreadService {
         threadRepository.deleteById(id);
     }
 
+    public Thread likeThread(String id ){
+       Thread t=getThreadById(id).get();
+       t.setLikes(t.getLikes()+1);
+        return saveThread(t);
+    }
+
+
+    public Thread dislikeThread(String id ){
+        Thread t=getThreadById(id).get();
+        t.setLikes(t.getLikes()-1);
+        return saveThread(t);
+    }
+
+
 }

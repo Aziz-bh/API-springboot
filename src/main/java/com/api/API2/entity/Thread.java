@@ -26,6 +26,7 @@ public class Thread {
     String title;
     @NotNull
     @NotBlank
+    @Size(min = 20)
     String issue;
     @Positive
     int likes;
